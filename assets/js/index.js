@@ -11,15 +11,19 @@ $(() => {
             layer.close(index);
         });
     })
+
+
+
+
 })
 
-
 // 这种定义方法所有作用域都可以使用
+// 想要通过外部window.parent调用必须定义在最外面
 function getUserInfo() {
     // 发起Ajax请求
     $.ajax({
         method: 'GET',
-        url: 'http://api-breakingnews-web.itheima.net/my/userinfo',
+        url: '/my/userinfo',
         headers: {
             Authorization: localStorage.getItem('token') || ''
         },
@@ -27,18 +31,18 @@ function getUserInfo() {
             if (res.status !== 0) {
                 return layer.msg(res.message)
             }
-            layer.msg(res.message)
-                // 渲染用户头像以及名字
+            // 渲染用户头像以及名字
+            console.log(res);
+
             renderUserInfo(res.data)
         },
-        complete: function(res) {
-            console.log(res);
-            if (res.responseJSON.status === 1 && res.responseJSON.message === '身份认证失败！') {
-                // 清空本地存储
-                localStorage.removeItem('token')
-                location.href = '/login.html'
-            }
-        }
+        // complete: function(res) {
+        //     if (res.responseJSON.status === 1 && res.responseJSON.message === '身份认证失败！') {
+        //         // 清空本地存储
+        //         localStorage.removeItem('token')
+        //         location.href = '/login.html'
+        //     }
+        // }
     })
 }
 
@@ -46,7 +50,6 @@ function renderUserInfo(user) {
     // 渲染头像
     // 获取名字
     let userName = user.nickname || user.username
-    console.log(userName)
         // 如果没有头像
     if (user.user_pic == null) {
         $('.text-avater').show().html(userName[0].toUpperCase())
