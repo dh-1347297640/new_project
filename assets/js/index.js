@@ -32,7 +32,6 @@ function getUserInfo() {
                 return layer.msg(res.message)
             }
             // 渲染用户头像以及名字
-            console.log(res);
 
             renderUserInfo(res.data)
         },
@@ -56,7 +55,7 @@ function renderUserInfo(user) {
         $('#welcome').html('欢迎&nbsp;&nbsp;' + userName)
         $('.layui-nav-img').hide()
     } else {
-        $('.layui-nav-img').show()
+        $('.layui-nav-img').show().attr('src', user.user_pic)
         $('#welcome').html('欢迎&nbsp;&nbsp;' + userName)
         $('.text-avater').hide()
     }
